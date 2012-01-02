@@ -1,0 +1,30 @@
+security:
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        secured_area:
+            pattern: ^/
+            anonymous: ~
+            form_login: ~
+            logout: ~
+
+    access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        
+    providers:
+        main:
+            entity: { class: Caching\BlogBundle\Entity\User, property: username }
+        #in_memory:
+            #users:
+                #user:  { password: userpass, roles: [ 'ROLE_USER' ] }
+                #admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+    
+    encoders:
+        Caching\BlogBundle\Entity\User: sha512
+ 

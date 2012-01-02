@@ -1,0 +1,35 @@
+{% extends 'CachingBlogBundle:Home:index.html.twig' %}
+
+{% block title %}{{ route.name }} - {{ route.routeDate|date('F j, Y')|escape }}{% endblock %}
+
+{% block body %}
+    <h1>
+        {{ route.name }} - {{ route.routeDate|date('F, j Y')|escape }}
+    </h1>
+    <div id="map-canvas" style="width:600px;height:500px"></div>
+    <script>
+        function initialize() {
+            var latlng = new google.maps.LatLng({{ avgLat }}, {{ avgLong }});
+            var myOptions = {
+                zoom: 14,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+            };
+            var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+
+            var flightPlanCoordinates = [
+                {% for point in points %}
+                new google.maps.LatLng({{ point['latitude'] }}, {{ point['longitude'] }}),
+                {% endfor %}
+            ];
+            var flightPath = new google.maps.Polyline({
+                path: flightPlanCoordinates,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+              });
+
+            flightPath.setMap(map);
+        }
+    </script>
+{% endblock %}

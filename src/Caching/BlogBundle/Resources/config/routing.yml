@@ -1,0 +1,26 @@
+# src/Caching/BlogBundle/Resources/config/routing.yml
+home:
+    pattern: /
+    defaults: { _controller: CachingBlogBundle:Home:index }
+       
+login:
+    pattern: /login
+    defaults: { _controller: CachingBlogBundle:Home:login }
+    
+login_check:
+    pattern: /login_check
+    
+logout:
+    pattern: /logout
+    
+create_entry:
+    pattern: /create
+    defaults: { _controller: CachingBlogBundle:Home:create }
+    
+upload_gpx_file:
+    pattern: /uploadGpx
+    defaults: { _controller: CachingBlogBundle:Home:uploadGpx }
+    
+view_route:
+    pattern: /route/{id}
+    defaults: { _controller: CachingBlogBundle:Home:viewRoute }
