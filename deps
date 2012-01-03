@@ -59,6 +59,24 @@
     target=/bundles/Symfony/Bundle/AsseticBundle
     version=v1.0.1
 
+[data-fixtures]
+    git=http://github.com/doctrine/data-fixtures.git
+
+[migrations]
+    git=http://github.com/doctrine/migrations.git
+
 [DoctrineBundle]
     git=http://github.com/doctrine/DoctrineBundle.git
     target=/bundles/Doctrine/Bundle/DoctrineBundle
+
+[DoctrineMigrationsBundle]
+    git=http://github.com/doctrine/DoctrineMigrationsBundle.git
+    target=/bundles/Doctrine/Bundle/MigrationsBundle
+
+[DoctrineFixturesBundle]
+    git=http://github.com/doctrine/DoctrineFixturesBundle.git
+    target=/bundles/Doctrine/Bundle/FixturesBundle
+
+[GpxReader]
+    git=http://github.com/jtownsend54/GpxReader.git
+    target=/gpxreader
