@@ -9,5 +9,5 @@
 /nbproject/
 .idea/
 .idea/workspace.xml
-.DS_Store
+*.DS_Store*
 src/Caching/BlogBundle/Resources/config/parameters.ini
