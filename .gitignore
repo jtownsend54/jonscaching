@@ -7,7 +7,6 @@
 /app/config/parameters.ini
 /app/config/parameters.yml
 /nbproject/
-*.DS_Store
 .idea/
 .idea/workspace.xml
 .DS_Store
