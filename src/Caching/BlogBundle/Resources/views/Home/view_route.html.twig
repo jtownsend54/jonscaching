@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>
-        {{ route.name }} - {{ route.routeDate|date('F, j Y')|escape }}
+        {{ route.name }} - {{ route.routeDate|date('F j, Y')|escape }}
     </h1>
     <div id="map-canvas" style="width:600px;height:500px"></div>
     <script>
