@@ -11,3 +11,4 @@
 .idea/workspace.xml
 *.DS_Store*
 src/Caching/BlogBundle/Resources/config/parameters.ini
+update-vendors
