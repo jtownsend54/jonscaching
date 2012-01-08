@@ -13,8 +13,8 @@
 
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
-        Logged in as {{ user.username }}
-        <form id="new-entry" action="{{ path('home') }}" method="post" {{ form_enctype(form) }}>
+        <h2>Logged in as {{ user.username }}</h2>
+        <form id="new-entry" action="{{ path('create_entry') }}" method="post" {{ form_enctype(form) }}>
             {{ form_errors(form) }}
             
             {{ form_row(form.title) }}
@@ -41,8 +41,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="/js/jquery-ui-1.8.16.custom/js/jquery-1.6.2.min.js" type="text/javascript"></script>
-    <script src="/js/jquery-ui-1.8.16.custom/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAfSSsh5P0kxnOijacuGqijvt1-1h-cBGg&sensor=false&libraries=polyline" type="text/javascript"></script>
     <script src="{{ asset('bundles/cachingblog/js/scripts.js') }}" type="text/javascript"></script>
 {% endblock %}

@@ -17,48 +17,14 @@ use JonsCaching\GpxReader\GpxReader;
 
 class HomeController extends Controller
 {
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         $entry  = new Entry();
         $form   = $this->createForm(new EntryType(), $entry);
         $upload = $this->createForm(new UploadType());
         $user   = $this->get('security.context')->getToken()->getUser();
-        
-        if ($request->isXmlHttpRequest())
-        {
-            $request->query->set('entry', $request->query->all());
-            $form->bindRequest($request);
-            
-            if ($form->isValid())
-            {
-                $entry->setCreated(new \DateTime('now'));
-                $entry->setUser($user);
-                
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($entry);
-                $em->flush();
-                
-                $json = array(
-                    'success' => 1,
-                );
-            }
-            else
-            {
-                var_dump($form->getErrors());
-                
-                $json = array(
-                    'success' => 0,
-                );
-            }
-            
-            $response = new Response(json_encode($json));
-            $response->headers->set('Content-Type', 'application/json');
-
-            return $response;
-        }
-        
-        $em         = $this->getDoctrine()->getEntityManager();
-        $routes     = $em->getRepository('Caching\BlogBundle\Entity\Route')->fetchIds();
+        $em     = $this->getDoctrine()->getEntityManager();
+        $routes = $em->getRepository('Caching\BlogBundle\Entity\Route')->fetchIds();
         
         $values = array(
             'user'      => $user,
@@ -93,20 +59,45 @@ class HomeController extends Controller
         return $this->render('CachingBlogBundle:Home:login.html.twig', $values);
     }
     
-    public function createAction()
+    public function createAction(Request $request)
     {
-        if ($this->getRequest()->isXmlHttpRequest())
+        // Make sure this function is called only with an ajax call
+        if ($request->isXmlHttpRequest())
         {
-            $form = $this->get('form.context');
-            
-            $json = array(
-                'success' => 1,
-            );
+            $entry  = new Entry();
+            $form   = $this->createForm(new EntryType(), $entry);
+            $user   = $this->get('security.context')->getToken()->getUser();
+            $form->bindRequest($request);
+
+            if ($form->isValid())
+            {
+                $entry->setCreated(new \DateTime('now'));
+                $entry->setUser($user);
+
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($entry);
+                $em->flush();
+
+                $json = array(
+                    'success' => 1,
+                );
+            }
+            else
+            {
+                $json = array(
+                    'success'   => 0,
+                    'errors'    => $form->getErrors(),
+                );
+            }
 
             $response = new Response(json_encode($json));
             $response->headers->set('Content-Type', 'application/json');
-            
+
             return $response;
+        }
+        else // No ajax, send 'em home
+        {
+            return $this->redirect($this->generateUrl('home'));
         }
     }
     
