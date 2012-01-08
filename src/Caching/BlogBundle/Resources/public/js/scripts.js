@@ -11,7 +11,14 @@ $(document).ready(function() {
                 'entry[_token]' : $('#entry__token').val()
             },
             success: function(data) {
-                console.log(data.success);
+                if (data.success == 1)
+                {
+                    $('#new-entry').before(flashMessage('New entry creating successfully!', 'success'));
+                }
+                else
+                {
+                    $('#new-entry').before(flashMessage(data.errrors, 'error'));
+                }
             }
         });
     });
@@ -26,4 +33,9 @@ $(document).ready(function() {
         initialize();
     }
 });
+
+function flashMessage(msg, type)
+{
+   return $('<div class="alert-message ' + type + '" data-alert="alert"><a class="close" href="#">×</a><p>' + msg + '</p></div>');
+}
 

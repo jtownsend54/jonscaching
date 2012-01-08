@@ -2,12 +2,8 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    
-    <link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print"> 
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection">
-    <![endif]-->
+
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
     <link href="/js/jquery-ui-1.8.16.custom/css/eggplant/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
@@ -22,7 +18,7 @@
 
             {{ form_rest(form) }}
 
-            <input type="submit" />
+            <input type="submit" value="Add Entry" class="btn primary"/>
         </form>
         <br /><br />
         <form id="upload-gpx" action="{{ path('upload_gpx_file') }}" method="post" {{ form_enctype(upload) }}>
@@ -30,12 +26,12 @@
 
             {{ form_rest(upload) }}
             
-            <input type="submit" />
+            <input type="submit" value="Add Track" class="btn primary"/>
         </form>
     {% endif %}
     <br /><br />
     {% for route in routes %}
-        <a href="{{ path('view_route', { 'id': route['id'] }) }}">{{ route['name'] }}</a>
+        <a href="{{ path('view_route', { 'id': route['id'] }) }}">{{ route['name'] }}</a><br />
     {% endfor %}
 {% endblock %}
 
@@ -45,4 +41,5 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAfSSsh5P0kxnOijacuGqijvt1-1h-cBGg&sensor=false&libraries=polyline" type="text/javascript"></script>
     <script src="{{ asset('bundles/cachingblog/js/scripts.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/cachingblog/js/bootstrap-alerts.js') }}" type="text/javascript"></script>
 {% endblock %}

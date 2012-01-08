@@ -61,7 +61,7 @@ class HomeController extends Controller
     
     public function createAction(Request $request)
     {
-        // Make sure this function is called only with an ajax call
+        // Make sure this function is called only with an ajax request
         if ($request->isXmlHttpRequest())
         {
             $entry  = new Entry();
