@@ -8,6 +8,7 @@ $(document).ready(function() {
             data: {
                 'entry[title]'  : $('#entry_title').val(),
                 'entry[entry]'  : $('#entry_entry').val(),
+                'entry[routes]' : $('#entry_routes').val(),
                 'entry[_token]' : $('#entry__token').val()
             },
             success: function(data) {

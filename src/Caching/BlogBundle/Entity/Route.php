@@ -2,8 +2,9 @@
 namespace Caching\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
-use Caching\BlogBundle\Entity\Point as Point;
+use Doctrine\Common\Collections\ArrayCollection;
+use Caching\BlogBundle\Entity\Point;
+use Caching\BlogBundle\Entity\Entry;
 
 /**
  * @ORM\Entity(repositoryClass="Caching\BlogBundle\Repository\RouteRepository")
@@ -31,9 +32,16 @@ class Route
      * @ORM\OneToMany(targetEntity="Point", mappedBy="Route")
      */
     protected $Points;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Entry", mappedBy="Routes")
+     */
+    protected $Entries;
+
     public function __construct()
     {
-        $this->Points = new ArrayCollection();
+        $this->Points   = new ArrayCollection();
+        $this->Entries  = new ArrayCollection();
     }
     
     /**
@@ -104,5 +112,25 @@ class Route
     public function getPoints()
     {
         return $this->Points;
+    }
+
+    /**
+     * Add Entries
+     *
+     * @param Entry $entries
+     */
+    public function addEntry(Entry $entries)
+    {
+        $this->Entries[] = $entries;
+    }
+
+    /**
+     * Get Entries
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getEntries()
+    {
+        return $this->Entries;
     }
 }

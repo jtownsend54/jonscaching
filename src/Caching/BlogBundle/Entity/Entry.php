@@ -2,7 +2,9 @@
 namespace Caching\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Caching\BlogBundle\Entity\User;
+use Caching\BlogBundle\Entity\Route;
 
 /**
  * @ORM\Entity
@@ -36,6 +38,17 @@ class Entry
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $User;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Route", inversedBy="Entries")
+     * @ORM\JoinTable(name="entries_routes")
+     */
+    private $Routes;
+
+    public function __construct()
+    {
+        $this->Routes = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -125,5 +138,25 @@ class Entry
     public function getUser()
     {
         return $this->User;
+    }
+
+    /**
+     * Add Routes
+     *
+     * @param Route $routes
+     */
+    public function addRoute(\Caching\BlogBundle\Entity\Route $routes)
+    {
+        $this->Routes[] = $routes;
+    }
+
+    /**
+     * Get Routes
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getRoutes()
+    {
+        return $this->Routes;
     }
 }
