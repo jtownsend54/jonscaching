@@ -2,10 +2,11 @@
 namespace Caching\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Caching\BlogBundle\Entity\Route as Route;
+use Caching\BlogBundle\Entity\Route;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="point")
  */
 class Point
 {

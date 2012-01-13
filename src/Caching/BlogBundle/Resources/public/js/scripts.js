@@ -1,10 +1,11 @@
 $(document).ready(function() {
-    $('#new-entry [type="submit"]').click(function(evt) {
+    /*$('#new-entry [type="submit"]').click(function(evt) {
         evt.preventDefault();
             
         $.ajax({
             url: '/app_dev.php/create',
             type: 'POST',
+            enctype: 'multipart/form-data',
             data: {
                 'entry[title]'  : $('#entry_title').val(),
                 'entry[entry]'  : $('#entry_entry').val(),
@@ -18,11 +19,11 @@ $(document).ready(function() {
                 }
                 else
                 {
-                    $('#new-entry').before(flashMessage(data.errrors, 'error'));
+                    $('#new-entry').before(flashMessage(data.errors, 'error'));
                 }
             }
         });
-    });
+    });*/
     
     // Assign jQueryUI DatePickers
     $('.datepicker').datepicker();

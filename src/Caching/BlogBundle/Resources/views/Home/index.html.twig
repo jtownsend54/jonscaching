@@ -31,7 +31,7 @@
     {% endif %}
     <br /><br />
     {% for route in routes %}
-        <a href="{{ path('view_route', { 'id': route['id'] }) }}">{{ route['name'] }}</a><br />
+        <a href="{{ path('view_route', { 'id': route['id'] }) }}">{{ route['area'] }}</a><br />
     {% endfor %}
 {% endblock %}
 

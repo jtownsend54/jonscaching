@@ -8,6 +8,7 @@ use Caching\BlogBundle\Entity\Route;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="entry")
  */
 class Entry
 {
@@ -40,15 +41,10 @@ class Entry
     protected $User;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Route", inversedBy="Entries")
-     * @ORM\JoinTable(name="entries_routes")
+     * @ORM\OneToOne(targetEntity="Route", inversedBy="Entry")
+     * @ORM\JoinColumn(name="route_id", referencedColumnName="id")
      */
-    private $Routes;
-
-    public function __construct()
-    {
-        $this->Routes = new ArrayCollection();
-    }
+    protected $Route;
 
     /**
      * Get id
@@ -141,22 +137,22 @@ class Entry
     }
 
     /**
-     * Add Routes
+     * Get Route
      *
-     * @param Route $routes
+     * @return Collection
      */
-    public function addRoute(\Caching\BlogBundle\Entity\Route $routes)
+    public function getRoute()
     {
-        $this->Routes[] = $routes;
+        return $this->Route;
     }
 
     /**
-     * Get Routes
+     * Set Route
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @param Route $route
      */
-    public function getRoutes()
+    public function setRoute(Route $route)
     {
-        return $this->Routes;
+        $this->Route = $route;
     }
 }

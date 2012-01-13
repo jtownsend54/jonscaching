@@ -1,10 +1,10 @@
 {% extends 'CachingBlogBundle:Home:index.html.twig' %}
 
-{% block title %}{{ route.name }} - {{ route.routeDate|date('F j, Y')|escape }}{% endblock %}
+{% block title %}{{ route.area }}{% endblock %}
 
 {% block body %}
     <h1>
-        {{ route.name }} - {{ route.routeDate|date('F j, Y')|escape }}
+        {{ route.area }}
     </h1>
     <div id="map-canvas" style="width:600px;height:500px"></div>
     <script>

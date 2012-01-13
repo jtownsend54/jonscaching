@@ -18,9 +18,8 @@ class RouteRepository extends EntityRepository
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         
-        $query = $qb->select('r.id, r.name')
+        $query = $qb->select('r')
                 ->from($this->getEntityName(), 'r')
-                ->orderBy('r.routeDate', 'ASC')
                 ->getQuery();
         
         return $query->getResult(Query::HYDRATE_ARRAY);

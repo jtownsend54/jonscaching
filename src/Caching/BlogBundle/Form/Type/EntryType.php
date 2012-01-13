@@ -11,18 +11,8 @@ class EntryType extends AbstractType
     {
         $builder->add('title');
         $builder->add('entry');
-        $builder->add('routes', 'entity', array(
-            'class'     => 'CachingBlogBundle:Route',
-            'multiple'  => true,
-            'property'  => 'name',
-        ));
-    }
-    
-    public function getDefaultOptions(array $options)
-    {
-        return array(
-            'data_class'        => 'Caching\BlogBundle\Entity\Entry',
-        );
+        $builder->add('route_area');
+        $builder->add('attachment', 'file');
     }
     
     public function getName()

@@ -8,6 +8,7 @@ use Caching\BlogBundle\Entity\Entry;
 
 /**
  * @ORM\Entity(repositoryClass="Caching\BlogBundle\Repository\RouteRepository")
+ * @ORM\Table(name="route")
  */
 class Route
 {
@@ -21,12 +22,7 @@ class Route
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
-    
-    /**
-     * @ORM\Column(type="date")
-     */
-    protected $routeDate;
+    protected $area;
     
     /**
      * @ORM\OneToMany(targetEntity="Point", mappedBy="Route")
@@ -34,14 +30,13 @@ class Route
     protected $Points;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Entry", mappedBy="Routes")
+     * @ORM\OneToOne(targetEntity="Entry", mappedBy="Route")
      */
-    protected $Entries;
+    protected $Entry;
 
     public function __construct()
     {
         $this->Points   = new ArrayCollection();
-        $this->Entries  = new ArrayCollection();
     }
     
     /**
@@ -52,46 +47,6 @@ class Route
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set routeDate
-     *
-     * @param datetime $routeDate
-     */
-    public function setRouteDate($routeDate)
-    {
-        $this->routeDate = $routeDate;
-    }
-
-    /**
-     * Get routeDate
-     *
-     * @return datetime 
-     */
-    public function getRouteDate()
-    {
-        return $this->routeDate;
     }
 
     /**
@@ -107,7 +62,7 @@ class Route
     /**
      * Get Points
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Collection
      */
     public function getPoints()
     {
@@ -115,22 +70,42 @@ class Route
     }
 
     /**
-     * Add Entries
+     * Set area
      *
-     * @param Entry $entries
+     * @param string $area
      */
-    public function addEntry(Entry $entries)
+    public function setArea($area)
     {
-        $this->Entries[] = $entries;
+        $this->area = $area;
     }
 
     /**
-     * Get Entries
+     * Get area
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return string 
      */
-    public function getEntries()
+    public function getArea()
     {
-        return $this->Entries;
+        return $this->area;
+    }
+
+    /**
+     * Set Entry
+     *
+     * @param Entry $entry
+     */
+    public function setEntry(Entry $entry)
+    {
+        $this->Entry = $entry;
+    }
+
+    /**
+     * Get Entry
+     *
+     * @return Entry
+     */
+    public function getEntry()
+    {
+        return $this->Entry;
     }
 }

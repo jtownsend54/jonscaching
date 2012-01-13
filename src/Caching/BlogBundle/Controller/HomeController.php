@@ -20,7 +20,7 @@ class HomeController extends Controller
     public function indexAction()
     {
         $entry  = new Entry();
-        $form   = $this->createForm(new EntryType(), $entry);
+        $form   = $this->createForm(new EntryType());
         $upload = $this->createForm(new UploadType());
         $user   = $this->get('security.context')->getToken()->getUser();
         $em     = $this->getDoctrine()->getEntityManager();
@@ -62,111 +62,91 @@ class HomeController extends Controller
     public function createAction(Request $request)
     {
         // Make sure this function is called only with an ajax request
-        if ($request->isXmlHttpRequest())
+        if ($request->getMethod() == 'POST')
         {
             $entry  = new Entry();
-            $form   = $this->createForm(new EntryType(), $entry);
+            $form   = $this->createForm(new EntryType());
             $user   = $this->get('security.context')->getToken()->getUser();
             $form->bindRequest($request);
 
             if ($form->isValid())
             {
-                $entry->setCreated(new \DateTime('now'));
-                $entry->setUser($user);
+                $formData   = $request->request->get('entry');
 
+                $entry->setCreated(new \DateTime('now'));
+                $entry->setTitle($formData['title']);
+                $entry->setEntry($formData['entry']);
+                $entry->setUser($user);
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($entry);
+                $entry->setRoute(self::createRoute($request, $formData));
+                $em->persist($entry);
                 $em->flush();
-
-                $json = array(
-                    'success' => 1,
-                );
             }
             else
             {
-                $json = array(
-                    'success'   => 0,
-                    'errors'    => $form->getErrors(),
-                );
+                $message = 'Failure: ' . $form->getErrors();
             }
-
-            $response = new Response(json_encode($json));
-            $response->headers->set('Content-Type', 'application/json');
-
-            return $response;
         }
-        else // No ajax, send 'em home
-        {
-            return $this->redirect($this->generateUrl('home'));
-        }
+
+        return $this->redirect($this->generateUrl('home'));
     }
     
-    public function uploadGpxAction()
+    public function createRoute(Request $request, $formData)
     {
-        $request = $this->getRequest();
-        if ($request->getMethod() == 'POST')
+        $file       = $request->files->get('entry');
+        $routeArea  = $formData['route_area'];
+        $filename   = time() . '.gpx';
+        $dir        = $this->container->parameters['upload_dir'];
+
+        $file['attachment']->move($dir, $filename);
+
+        $gpxReader = new GpxReader($dir . $filename);
+        $latLongs = $gpxReader->getLatLongs();
+
+        $route = new Route();
+        $route->setArea($routeArea);
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($route);
+        $em->flush();
+        $id = $route->getId();
+        $i  = 0;
+
+        foreach($latLongs as $point)
         {
-            $upload = $this->createForm(new UploadType());
-            $upload->bindRequest($request);
+            $newPoint = new Point();
+            $newPoint->setLatitude($point[0]);
+            $newPoint->setLongitude($point[1]);
+            $newPoint->setRoute($route);
 
-            if ($upload->isValid())
+            $em->persist($newPoint);
+
+            $route->addPoint($newPoint);
+
+            $i++;
+
+            if ($i > 5)
             {
-                $file       = $request->files->get('upload');
-                $formData   = $request->request->get('upload');
-                $routeName  = $formData['route_name'];
-                $date       = $formData['route_date'];
-                $filename   = time() . '.gpx';
-                $dir        = $this->container->parameters['upload_dir'];
-
-                $file['attachment']->move($dir, $filename);
-                
-                $gpxReader = new GpxReader($dir . $filename);
-                $latLongs = $gpxReader->getLatLongs();
-                
-                $route = new Route();
-                $route->setName($routeName);
-                $route->setRouteDate(new \DateTime($date));
-                
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($route);
                 $em->flush();
-                $id = $route->getId();
-                $i  = 0;
-                
-                foreach($latLongs as $point)
-                {
-                    $newPoint = new Point();
-                    $newPoint->setLatitude($point[0]);
-                    $newPoint->setLongitude($point[1]);
-                    $newPoint->setRoute($route);
-                    
-                    $em->persist($newPoint);
-                    
-                    $route->addPoint($newPoint);
-                    
-                    $i++;
-                    
-                    if ($i > 20)
-                    {
-                        $em->flush();
-                        $em->clear();
-                        $route = $em->getRepository('Caching\BlogBundle\Entity\Route')->find($id);
-                        $i = 0;
-                    }
-                }
-                
-                $em->flush();
+                $em->clear();
+                $route = $em->getRepository('CachingBlogBundle:Route')->find($id);
+                $i = 0;
             }
         }
-        return $this->redirect($this->generateUrl('home'));
+
+        $em->persist($route);
+        $em->flush();
+
+        return $route;
     }
     
     public function viewRouteAction($id)
     {
         $route = $this->getDoctrine()->getEntityManager()
-            ->getRepository('Caching\BlogBundle\Entity\Route')
+            ->getRepository('CachingBlogBundle:Route')
             ->find($id);
-        
+
         $points     = array();
         $avgLat     = 0;
         $avgLong    = 0;
@@ -180,7 +160,7 @@ class HomeController extends Controller
             $avgLong += $point->getLongitude();
             $i++;
         }
-        
+
         $values = array(
             'route'         => $route,
             'points'        => $points,
