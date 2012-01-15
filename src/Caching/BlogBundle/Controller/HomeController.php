@@ -19,18 +19,15 @@ class HomeController extends Controller
 {
     public function indexAction()
     {
-        $entry  = new Entry();
-        $form   = $this->createForm(new EntryType());
-        $upload = $this->createForm(new UploadType());
-        $user   = $this->get('security.context')->getToken()->getUser();
-        $em     = $this->getDoctrine()->getEntityManager();
-        $routes = $em->getRepository('Caching\BlogBundle\Entity\Route')->fetchIds();
-        
+        $form       = $this->createForm(new EntryType());
+        $user       = $this->get('security.context')->getToken()->getUser();
+        $em         = $this->getDoctrine()->getEntityManager();
+        $entries    = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchAll();
+
         $values = array(
             'user'      => $user,
             'form'      => $form->createView(),
-            'upload'    => $upload->createView(),
-            'routes'    => $routes,
+            'entries'   => $entries,
         );
         
         return $this->render('CachingBlogBundle:Home:index.html.twig', $values);
@@ -79,13 +76,15 @@ class HomeController extends Controller
                 $entry->setUser($user);
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($entry);
+
                 $entry->setRoute(self::createRoute($request, $formData));
-                $em->persist($entry);
+
                 $em->flush();
             }
             else
             {
-                $message = 'Failure: ' . $form->getErrors();
+                var_dump($form->getErrors());
+                die;
             }
         }
 
@@ -101,8 +100,8 @@ class HomeController extends Controller
 
         $file['attachment']->move($dir, $filename);
 
-        $gpxReader = new GpxReader($dir . $filename);
-        $latLongs = $gpxReader->getLatLongs();
+        $gpxReader  = new GpxReader($dir . $filename);
+        $latLongs   = $gpxReader->getLatLongs();
 
         $route = new Route();
         $route->setArea($routeArea);
@@ -126,12 +125,15 @@ class HomeController extends Controller
 
             $i++;
 
-            if ($i > 5)
+            if ($i > 1500)
             {
+
                 $em->flush();
                 $em->clear();
-                $route = $em->getRepository('CachingBlogBundle:Route')->find($id);
-                $i = 0;
+                //echo 2;
+                //die;
+                $route  = $em->getRepository('CachingBlogBundle:Route')->find($id);
+                //$i      = 0;
             }
         }
 

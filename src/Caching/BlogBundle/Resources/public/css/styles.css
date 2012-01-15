@@ -1,0 +1,15 @@
+.entry {
+    margin-bottom:50px;
+}
+
+form .form-part {
+    margin:10px 0;
+}
+
+form .input {
+    margin-left:120px;
+}
+
+form textarea {
+    height:90px;
+}

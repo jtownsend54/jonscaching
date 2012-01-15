@@ -7,7 +7,7 @@ use Caching\BlogBundle\Entity\User;
 use Caching\BlogBundle\Entity\Route;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Caching\BlogBundle\Repository\EntryRepository")
  * @ORM\Table(name="entry")
  */
 class Entry
@@ -35,7 +35,7 @@ class Entry
     protected $entry;
     
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="Entries")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="Entries", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $User;

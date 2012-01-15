@@ -1,45 +1,74 @@
 {% extends '::base.html.twig' %}
 
 {% block stylesheets %}
-    {{ parent() }}
-
+{{ parent() }}
+{% stylesheets
+    '@CachingBlogBundle/Resources/public/css/*'
+    output='js/styles.css'
+%}
     <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
     <link href="/js/jquery-ui-1.8.16.custom/css/eggplant/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
 {% endblock %}
 
 {% block body %}
+    <div class="container">
     {% if is_granted('ROLE_ADMIN') %}
-        <h2>Logged in as {{ user.username }}</h2>
+        <h2>Welcome back {{ user.username }}</h2>
         <form id="new-entry" action="{{ path('create_entry') }}" method="post" {{ form_enctype(form) }}>
             {{ form_errors(form) }}
-            
-            {{ form_row(form.title) }}
-            {{ form_row(form.entry) }}
-
+            <div class="row">
+                <div class="span6">
+                    <div class="form-part">
+                        {{ form_label(form.title, 'Entry Title', { 'attr': {'class': 'span2'} }) }}
+                        <div class="input">
+                            {{ form_widget(form.title, { 'attr': {'class': 'span4'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-part">
+                        {{ form_label(form.route_area, 'Route Area', { 'attr': {'class': 'span2'} }) }}
+                        <div class="input">
+                            {{ form_widget(form.route_area, { 'attr': {'class': 'span4'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-part">
+                        {{ form_label(form.attachment, 'Route File (.gpx)', { 'attr': {'class': 'span2'} }) }}
+                        <div class="input">
+                            {{ form_widget(form.attachment, { 'attr': {'class': 'span4'} }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="span10">
+                    <div class="form-part">
+                        {{ form_label(form.entry, 'Entry', { 'attr': {'class': 'span2'} }) }}
+                        <div class="input">
+                            {{ form_widget(form.entry, { 'attr': {'class': 'span8'} }) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
             {{ form_rest(form) }}
 
             <input type="submit" value="Add Entry" class="btn primary"/>
         </form>
-        <br /><br />
-        <form id="upload-gpx" action="{{ path('upload_gpx_file') }}" method="post" {{ form_enctype(upload) }}>
-            {{ form_errors(upload) }}
-
-            {{ form_rest(upload) }}
-            
-            <input type="submit" value="Add Track" class="btn primary"/>
-        </form>
     {% endif %}
-    <br /><br />
-    {% for route in routes %}
-        <a href="{{ path('view_route', { 'id': route['id'] }) }}">{{ route['area'] }}</a><br />
+    {% for entry in entries %}
+        <div class="entry">
+            <h1>{{ entry.title }}</h1>
+            <h4><a href="{{ path('view_route', { 'id': entry.Route.id }) }}">{{ entry.Route.area }}</a> {{ entry.created|date('F j, Y') }}</h4>
+            <article>
+                {{ entry.entry|raw }}
+            </article>
+        </div>
     {% endfor %}
+    </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAfSSsh5P0kxnOijacuGqijvt1-1h-cBGg&sensor=false&libraries=polyline" type="text/javascript"></script>
     <script src="{{ asset('bundles/cachingblog/js/scripts.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/cachingblog/js/bootstrap-alerts.js') }}" type="text/javascript"></script>
 {% endblock %}

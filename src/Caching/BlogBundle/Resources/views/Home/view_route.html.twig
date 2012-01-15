@@ -33,3 +33,8 @@
         }
     </script>
 {% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAfSSsh5P0kxnOijacuGqijvt1-1h-cBGg&sensor=false&libraries=polyline" type="text/javascript"></script>
+{% endblock %}
