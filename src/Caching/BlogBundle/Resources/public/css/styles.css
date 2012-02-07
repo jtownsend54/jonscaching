@@ -2,6 +2,11 @@
     margin-bottom:50px;
 }
 
+.entry p {
+    width:400px;
+    text-align:justify;
+}
+
 form .form-part {
     margin:10px 0;
 }

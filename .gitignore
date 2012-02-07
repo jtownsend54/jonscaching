@@ -1,5 +1,6 @@
 /web/bundles/
 /web/gpx_files/
+/web/images/
 /app/bootstrap*
 /app/cache/*
 /app/logs/*
