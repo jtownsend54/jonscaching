@@ -1,9 +1,13 @@
+.fl { float:left; }
+.fr { float:right; }
+.clear { clear:both; }
+
 .entry {
     margin-bottom:50px;
 }
 
 .entry p {
-    width:400px;
+    width:390px;
     text-align:justify;
 }
 
@@ -17,4 +21,9 @@ form .input {
 
 form textarea {
     height:90px;
+}
+
+.images {
+    width:540px;
+    margin-left:10px;
 }

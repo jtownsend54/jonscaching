@@ -46,6 +46,17 @@ $(document).ready(function() {
             {title : "Zip files", extensions : "zip"}
         ]
     });
+
+    var images = $('.images');
+
+    images.imagesLoaded(function() {
+        images.masonry({
+            itemSelector    : '.image',
+            isAnimated      : true
+        });
+    });
+
+    $('.images a').fancybox();
 });
 
 function flashMessage(msg, type)
