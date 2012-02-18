@@ -24,3 +24,7 @@ upload_gpx_file:
 view_route:
     pattern: /route/{id}
     defaults: { _controller: CachingBlogBundle:Home:viewRoute }
+
+upload_photo:
+    pattern: /upload_photo
+    defaults: { _controller: CachingBlogBundle:Home:uploadPhoto }

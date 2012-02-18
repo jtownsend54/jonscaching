@@ -172,4 +172,10 @@ class HomeController extends Controller
         
         return $this->render('CachingBlogBundle:Home:view_route.html.twig', $values);
     }
+
+    public function uploadPhotoAction(Request $request)
+    {
+        $file       = $request->files->get('file');
+        $file->move($this->container->parameters['upload_dir'], $file->getClientOriginalName());
+    }
 }

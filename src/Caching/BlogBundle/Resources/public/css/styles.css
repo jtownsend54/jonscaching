@@ -27,3 +27,75 @@ form textarea {
     width:540px;
     margin-left:10px;
 }
+
+#uploader {
+    width:500px;
+    height:220px;
+    border:1px solid #333;
+    background:#efefef;
+    overflow:hidden;
+}
+
+#uploader #files {
+    overflow-y:scroll;
+    overflow-x:hidden;
+    height:168px;
+    width:auto;
+}
+
+#uploader .row {
+    margin-left:0;
+    font-weight:200;
+}
+
+#uploader .title-bar {
+    background:#333;
+    height:22px;
+    width:auto;
+    font-weight:200;
+    font-size:18px;
+    color:white;
+}
+
+#uploader .file {
+    height:25px;
+    padding-top:5px;
+    background: #efefef;
+    background: -moz-linear-gradient(top,  #efefef 0%, #dcdcdc 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#efefef), color-stop(100%,#dcdcdc));
+    background: -webkit-linear-gradient(top,  #efefef 0%,#dcdcdc 100%);
+    background: -o-linear-gradient(top,  #efefef 0%,#dcdcdc 100%);
+    background: -ms-linear-gradient(top,  #efefef 0%,#dcdcdc 100%);
+    background: linear-gradient(top,  #efefef 0%,#dcdcdc 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efefef', endColorstr='#dcdcdc',GradientType=0 );
+}
+
+#uploader .file i {
+    margin:2px 0 0 2px;
+    cursor:pointer;
+}
+
+#uploader .file .span5 {
+    margin-left:4px;
+}
+
+#uploader #filebar {
+    height:30px;
+    width:500px;
+    display:none;
+    background:#333;
+    position:relative;
+    bottom:-30px;
+}
+
+#uploader #filebar .btn {
+    padding:0 8px;
+    height:20px;
+    font-weight:bold;
+    margin:5px 0 0 20px;
+    position:relative;
+}
+
+#uploader #filebar .btn i {
+    margin: 2px 0 0 2px;
+}
