@@ -82,10 +82,7 @@ form textarea {
 #uploader #filebar {
     height:30px;
     width:500px;
-    display:none;
     background:#333;
-    position:relative;
-    bottom:-30px;
 }
 
 #uploader #filebar .btn {

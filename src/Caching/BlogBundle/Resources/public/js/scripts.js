@@ -62,7 +62,7 @@ $(document).ready(function() {
         $.fancybox.next();
     });
 
-    FileUploader.init();
+    //FileUploader.init();
 });
 
 function flashMessage(msg, type)
@@ -70,7 +70,7 @@ function flashMessage(msg, type)
    return $('<div class="alert-message ' + type + '" data-alert="alert"><a class="close" href="#">×</a><p>' + msg + '</p></div>');
 }
 
-var FileUploader = {
+var FileUploader2 = {
     container : document.getElementById("files"),
     fileDiv : $('<div class="file row"><i class="icon-remove fl"></i><span class="span5"></span><span class="span1"></span></div>'),
     files : Array(),
@@ -145,28 +145,16 @@ var FileUploader = {
             length = files.length;
 
         for (var i = 0; i < length; i++) {
-            var xhr     = new XMLHttpRequest(),
-                reader  = new FileReader();
+            var xhr         = new XMLHttpRequest(),
+                formData    = new FormData();
 
-            var formData = new FormData();
             formData.append('test', 'test');
             formData.append('file', files[i]);
 
             xhr.open("POST", "/app_dev.php/upload_photo");
             xhr.send(formData);
-            //xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
-
-//            xhr.setRequestHeader('Content-Type', 'multipart/form-data');
-//            xhr.setRequestHeader('X-File-Name', files[i].fileName);
-//            xhr.setRequestHeader('X-File-Size', files[i].fileSize);
-//            xhr.setRequestHeader('X-File-Type', files[i].type);
-//            //xhr.send(files[i]);
-//            reader.onload = function(e) {
-//                xhr.send(e.target.result);
-//            }
-//
-//            reader.readAsBinaryString(files[i]);
         }
     }
 }
 
+$('div#uploader').fileUploader();
