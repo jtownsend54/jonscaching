@@ -15,16 +15,18 @@ if ( typeof Object.create !== 'function' ) {
             self.$element       = $(ele);
             self.uploadUrl      = '/app_dev.php/upload_photo';
             self.files          = [];
-            self.fileDisplay    = $('<div class="file row"><i class="icon-remove fl"></i><span class="span5"></span><span class="span1"></span></div>');
+            self.fileDisplay    = $('<div class="file row"><i class="icon-remove fl"></i><span class="span3"></span><span class="span2"></span></div>');
             self.options        = $.extend({}, $.fn.fileUploader.options, options);
 
             // Build what the user will see
             self.build();
 
-            // Add event listeners for drag and drop events
+            // Add event listeners for drag and drop events, and buttons
             self.element.addEventListener('dragenter', self.doNothing, false);
             self.element.addEventListener('dragover', self.doNothing, false);
             self.element.addEventListener('drop', function(e) { self.dropFiles(e); }, false);
+            self.$element.on('click', 'button#clear', function() { self.clearList(self) });
+            self.$element.on('click', 'button#upload', function() { self.uploadFiles(self); });
         },
         build: function() {
             var self   = this;
@@ -32,12 +34,12 @@ if ( typeof Object.create !== 'function' ) {
                 .addClass('title-bar row')
                 .append(document.createElement('div'))
                     .children('div')
-                    .addClass('span5')
+                    .addClass('span3')
                     .html('Filename')
                 .parent()
                 .append(document.createElement('div'))
                     .children('div:last-child')
-                    .addClass('span1')
+                    .addClass('span2')
                     .html('Size')
                 .parent();
 
@@ -76,28 +78,29 @@ if ( typeof Object.create !== 'function' ) {
         },
         dropFiles: function(e) {
             var self        = this,
-                files       = e.dataTransfer.files,
+                fileList    = e.dataTransfer.files,
                 i           = 0,
-                fileCount   = files.length;
-
-            self.files = files;
+                fileCount   = fileList.length;
 
             // Add the files that were dragged in
             for (i = 0; i < fileCount; i++) {
-                self.addFile(files[i]);
+                self.addFile(fileList[i]);
+                self.files.push(fileList[i]);
             }
 
             // Assign removeFile event handler
-            self.$element.on('click', 'i.icon-remove', self.removeFile);
+            self.$element.on('click', 'i.icon-remove', function() { self.removeFile($(this), self); });
+
+            // Remove disabled state from clear button if we have files
+            if (self.files.length > 0) {
+                self.$element.find('button').removeClass('disabled');
+            }
 
             self.doNothing(e);
         },
         addFile: function(file) {
             var self        = this,
                 fileHtml    = self.fileDisplay.clone();
-
-            // Assign the current file to the html
-            fileHtml.file   = file;
 
             // Update html with filename and filesize,
             // then diplay it in the file list
@@ -109,14 +112,52 @@ if ( typeof Object.create !== 'function' ) {
                 .parent()
                 .appendTo(self.$element.children('div#files'));
         },
-        removeFile: function() {
-            $(this).parent().slideUp(200, function() { $(this).remove(); });
-        },
-        clearList: function() {
+        removeFile: function($this, self) {
+            var $this       = $this,
+                fileName    = $this.next().text(),
+                i           = 0,
+                filecount   = self.files.length;
 
+            // Remove the div thats hold the file info
+            $this.parent().slideUp(200, function() { $(this).remove(); });
+
+            // Find the file that the user wants to remove pre-upload
+            for (i = 0; i < filecount; i++) {
+                if (self.files[i].fileName == fileName) {
+                    self.files.splice(i, 1);
+                    break;
+                }
+            }
+
+            // Remove disabled state from clear button if we have files
+            if (self.files.length > 0) {
+                self.$element.find('button#clear').removeClass('disabled');
+            } else {
+                self.$element.find('button').addClass('disabled');
+            }
+        },
+        clearList: function(self) {
+            self.$element.find('div#files').html('');
+            self.files = [];
+            self.$element.find('button').addClass('disabled');
         },
         uploadFiles: function() {
+            var self = this,
+                files = self.files,
+                fileCount = files.length;
 
+            for (var i = 0; i < fileCount; i++) {
+                var xhr         = new XMLHttpRequest(),
+                    formData    = new FormData();
+
+                formData.append('test', 'test');
+                formData.append('file', files[i]);
+
+                xhr.open("POST", "/app_dev.php/upload_photo");
+                xhr.send(formData);
+            }
+
+            self.clearList(self);
         }
     };
 
