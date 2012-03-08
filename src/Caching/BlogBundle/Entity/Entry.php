@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Caching\BlogBundle\Entity\User;
 use Caching\BlogBundle\Entity\Route;
+use Caching\BlogBundle\Entity\EntryImage;
 
 /**
  * @ORM\Entity(repositoryClass="Caching\BlogBundle\Repository\EntryRepository")
@@ -45,6 +46,16 @@ class Entry
      * @ORM\JoinColumn(name="route_id", referencedColumnName="id")
      */
     protected $Route;
+
+    /**
+     * @ORM\OneToMany(targetEntity="EntryImage", mappedBy="Entry")
+     */
+    protected $Images;
+
+    public function __construct()
+    {
+        $this->EntryImages = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -154,5 +165,25 @@ class Entry
     public function setRoute(Route $route)
     {
         $this->Route = $route;
+    }
+
+    /**
+     * Get Images
+     *
+     * @return Collection
+     */
+    public function getImages()
+    {
+        return $this->EntryImages;
+    }
+
+    /**
+     * Add Image
+     *
+     * @param EntryImage $image
+     */
+    public function addImage(EntryImage $image)
+    {
+        $this->EntryImages[] = $image;
     }
 }

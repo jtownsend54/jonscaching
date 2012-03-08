@@ -24,6 +24,8 @@ class HomeController extends Controller
         $em         = $this->getDoctrine()->getEntityManager();
         $entries    = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchAll();
 
+        $loader = new Twig_Loader_String();
+
         $values = array(
             'user'      => $user,
             'form'      => $form->createView(),
@@ -176,6 +178,14 @@ class HomeController extends Controller
     public function uploadPhotoAction(Request $request)
     {
         $file       = $request->files->get('file');
+
+        // Clone $file to $thumb
+
+        // Resize $thumb to fit in masonry
+
+        // move $thumb into /images/places/{place}/thumbs/
+
+        // move $file into /images/places/{place}/fulls/
         $file->move($this->container->parameters['upload_dir'], $file->getClientOriginalName());
     }
 }

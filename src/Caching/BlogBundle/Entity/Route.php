@@ -108,4 +108,13 @@ class Route
     {
         return $this->Entry;
     }
+
+    /**
+     * Return the area name with lowercase letters and underscores instead of spaces
+     *
+     * @return string
+     */
+    public function getFolderName() {
+        return strtolower(str_replace(' ', '_', $this->area));
+    }
 }

@@ -118,7 +118,7 @@ if ( typeof Object.create !== 'function' ) {
                 i           = 0,
                 filecount   = self.files.length;
 
-            // Remove the div thats hold the file info
+            // Remove the div that holds the file info
             $this.parent().slideUp(200, function() { $(this).remove(); });
 
             // Find the file that the user wants to remove pre-upload
@@ -150,7 +150,7 @@ if ( typeof Object.create !== 'function' ) {
                 var xhr         = new XMLHttpRequest(),
                     formData    = new FormData();
 
-                formData.append('test', 'test');
+                formData.append('folder', 'test');
                 formData.append('file', files[i]);
 
                 xhr.open("POST", "/app_dev.php/upload_photo");

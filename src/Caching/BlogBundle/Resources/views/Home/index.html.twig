@@ -53,17 +53,6 @@
 
             <input type="submit" value="Add Entry" class="btn btn-primary"/>
         </form>
-        {#<div id="uploader">#}
-            {#<div class="title-bar row">#}
-                {#<span class="span5">Filename</span>#}
-                {#<span class="span1">Size</span>#}
-            {#</div>#}
-            {#<div id="files"></div>#}
-            {#<div id="filebar">#}
-                {#<button id="upload" class="btn btn-primary">Upload<i class="icon-upload"></i></button>#}
-                {#<button id="clear" class="btn">Clear<i class="icon-trash"></i></button>#}
-            {#</div>#}
-        {#</div>#}
         <div id="uploader"></div>
     {% endif %}
     {% for entry in entries %}
@@ -73,7 +62,7 @@
             <p class="fl">
                 {{ entry.entry|raw }}
             </p>
-            <div class="images fl">
+            <div class="images fl" data-folder="{{ entry.Route.FolderName }}">
                 <div class="image fl">
                     <a href="{{ asset('images/fisk_property/views/icy_road.jpg') }}" rel="group1">
                         <img class="fl" src="{{ asset('images/fisk_property/thumbs/icy_road_thumb.jpg') }}" />
