@@ -13,3 +13,4 @@
 *.DS_Store*
 src/Caching/BlogBundle/Resources/config/parameters.ini
 update-vendors
+.DS_Store
