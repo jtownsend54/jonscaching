@@ -24,15 +24,11 @@ class HomeController extends Controller
         $em         = $this->getDoctrine()->getEntityManager();
         $entries    = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchAll();
 
-        $loader = new Twig_Loader_String();
-
-        $values = array(
+        return $this->render('CachingBlogBundle:Home:index.html.twig', array(
             'user'      => $user,
             'form'      => $form->createView(),
             'entries'   => $entries,
-        );
-        
-        return $this->render('CachingBlogBundle:Home:index.html.twig', $values);
+        ));
     }
     
     public function loginAction()
@@ -50,12 +46,10 @@ class HomeController extends Controller
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
         }
         
-        $values = array(
+        return $this->render('CachingBlogBundle:Home:login.html.twig', array(
             'last_username' => $session->get(SecurityContext::LAST_USERNAME),
             'error'         => $error,
-        );
-        
-        return $this->render('CachingBlogBundle:Home:login.html.twig', $values);
+        ));
     }
     
     public function createAction(Request $request)
@@ -165,27 +159,38 @@ class HomeController extends Controller
             $i++;
         }
 
-        $values = array(
+        return $this->render('CachingBlogBundle:Home:view_route.html.twig', array(
             'route'         => $route,
             'points'        => $points,
             'avgLat'        => $avgLat / $i,
             'avgLong'       => $avgLong / $i,
-        );
-        
-        return $this->render('CachingBlogBundle:Home:view_route.html.twig', $values);
+        ));
     }
 
     public function uploadPhotoAction(Request $request)
     {
         $file       = $request->files->get('file');
+        $entryid    = $request->request->get('entry_id');
+        $entry      = $this->getDoctrine()->getEntityManager()
+                        ->getRepository('CachingBlogBundle:Entry')
+                        ->find($entryid);
 
         // Clone $file to $thumb
 
         // Resize $thumb to fit in masonry
 
-        // move $thumb into /images/places/{place}/thumbs/
+        // move $thumb into /images/route/{route}/thumbs/
 
-        // move $file into /images/places/{place}/fulls/
-        $file->move($this->container->parameters['upload_dir'], $file->getClientOriginalName());
+        // move $file into /images/route/{route}/fulls/
+        $file->move($this->container->parameters['upload_dir'] . $entry->getRoute()->getFolderName(), $file->getClientOriginalName());
+
+        $json = array(
+            'success'   => 1,
+            'entry_id'  => $entryid,
+        );
+
+        return $this->render('CachingBlogBundle:Home:json.html.twig', array(
+            'json' => json_encode($json),
+        ));
     }
 }

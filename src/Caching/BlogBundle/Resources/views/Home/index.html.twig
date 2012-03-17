@@ -4,7 +4,7 @@
 {{ parent() }}
 {% stylesheets
     '@CachingBlogBundle/Resources/public/css/*'
-    output='js/styles.css'
+    output='css/styles.css'
 %}
     <link href="{{ asset('js/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('js/jquery-ui-1.8.16.custom/css/eggplant/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" type="text/css" />
@@ -53,16 +53,20 @@
 
             <input type="submit" value="Add Entry" class="btn btn-primary"/>
         </form>
-        <div id="uploader"></div>
     {% endif %}
+
     {% for entry in entries %}
         <article class="entry">
             <h1>{{ entry.title }}</h1>
             <h4><a href="{{ path('view_route', { 'id': entry.Route.id }) }}">{{ entry.Route.area }}</a> {{ entry.created|date('F j, Y') }}</h4>
+            {% if is_granted('ROLE_ADMIN') %}
+            <button class="btn btn-primary show-uploader" data-entry-id="{{ entry.id }}">Add Images<i class="icon-picture"></i></button>
+            <div class="clear"></div>
+            {% endif %}
             <p class="fl">
                 {{ entry.entry|raw }}
             </p>
-            <div class="images fl" data-folder="{{ entry.Route.FolderName }}">
+            <div class="images fl">
                 <div class="image fl">
                     <a href="{{ asset('images/fisk_property/views/icy_road.jpg') }}" rel="group1">
                         <img class="fl" src="{{ asset('images/fisk_property/thumbs/icy_road_thumb.jpg') }}" />
@@ -113,6 +117,7 @@
         </article>
     {% endfor %}
     </div>
+    <div id="uploader" style="display:none"></div>
 {% endblock %}
 
 {% block javascripts %}

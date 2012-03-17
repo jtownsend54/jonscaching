@@ -29,11 +29,11 @@ form textarea {
 }
 
 #uploader {
-    width:500px;
     height:220px;
     border:1px solid #333;
     background:#efefef;
     overflow:hidden;
+    margin-top:-200px;
 }
 
 #uploader #files {
@@ -81,7 +81,6 @@ form textarea {
 
 #uploader #filebar {
     height:30px;
-    width:500px;
     background:#333;
 }
 

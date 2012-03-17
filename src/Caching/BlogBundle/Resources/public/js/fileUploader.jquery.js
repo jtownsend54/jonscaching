@@ -13,10 +13,16 @@ if ( typeof Object.create !== 'function' ) {
             var self            = this;
             self.element        = ele;
             self.$element       = $(ele);
-            self.uploadUrl      = '/app_dev.php/upload_photo';
             self.files          = [];
-            self.fileDisplay    = $('<div class="file row"><i class="icon-remove fl"></i><span class="span3"></span><span class="span2"></span></div>');
+            self.fileDisplay    = $('<div class="file row"><i class="icon-remove fl"></i><span class="span4"></span><span class="span2"></span></div>');
             self.options        = $.extend({}, $.fn.fileUploader.options, options);
+            self.extraData      = {};
+
+            // Hide the uploader
+            self.$element
+                .hide()
+                .addClass('modal')
+                .addClass('fade');
 
             // Build what the user will see
             self.build();
@@ -34,7 +40,7 @@ if ( typeof Object.create !== 'function' ) {
                 .addClass('title-bar row')
                 .append(document.createElement('div'))
                     .children('div')
-                    .addClass('span3')
+                    .addClass('span4')
                     .html('Filename')
                 .parent()
                 .append(document.createElement('div'))
@@ -67,8 +73,7 @@ if ( typeof Object.create !== 'function' ) {
                         .children('i')
                         .addClass('icon-trash')
                     .parent()
-                .parent()
-
+                .parent();
 
             self.$element.append(header.outerHTML() + files.outerHTML() + toolbar.outerHTML());
         },
@@ -150,30 +155,50 @@ if ( typeof Object.create !== 'function' ) {
                 var xhr         = new XMLHttpRequest(),
                     formData    = new FormData();
 
-                formData.append('folder', 'test');
+                // Add any extra data the user has passed in for the xhr request
+                for (var key in self.extraData) {
+                    if (typeof self.extraData[key] !== 'object') {
+                        formData.append(key, self.extraData[key]);
+                    }
+                }
+
                 formData.append('file', files[i]);
 
-                xhr.open("POST", "/app_dev.php/upload_photo");
+                xhr.open("POST", self.options.upload_url);
                 xhr.send(formData);
             }
 
             self.clearList(self);
+        },
+        addExtraData: function() {
+            var self = $.data(this[0], 'uploaderInstance');
+            // arguments[0] is the object passed in
+            self.extraData = $.extend({}, self.extraData, arguments[0]);
+
+            // Return this for use with method chaining
+            return this;
         }
     };
 
-    $.fn.fileUploader = function(options) {
-        return this.each(function() {
-            var uploader = Object.create(FileUploader);
-            uploader.init(options, this);
-            $.data(this, 'fileUploader', uploader);
-        });
+    $.fn.fileUploader = function(method) {
+        // Method calling logic
+        if ( FileUploader[method] ) {
+            return FileUploader[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+        } else if ( typeof method === 'object' || ! method ) {
+            return this.each(function() {
+                var uploader = Object.create(FileUploader);
+                uploader.init(method, this);
+                $.data(this, 'uploaderInstance', uploader);
+            });
+        } else {
+            $.error( 'Method ' +  method + ' does not exist on jQuery.fileUploader' );
+        }
     };
 
     // default options
     $.fn.fileUploader.options = {
-
+        upload_url: '/uploads'
     };
-
 })(jQuery, window, document);
 
 ;(function ($, window, document, undefined) {
