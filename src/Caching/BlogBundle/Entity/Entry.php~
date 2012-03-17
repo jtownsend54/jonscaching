@@ -2,10 +2,13 @@
 namespace Caching\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Caching\BlogBundle\Entity\User;
+use Caching\BlogBundle\Entity\Route;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="entry")
  */
 class Entry
 {
@@ -32,10 +35,20 @@ class Entry
     protected $entry;
     
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="Entries")
+     * @ORM\ManyToOne(targetEntity="user", inversedBy="Entries")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $User;
+
+    /**
+     * @ORM\OneToOne(targetEntity="route", inversedBy="Entry")
+     */
+    private $Route;
+
+    public function __construct()
+    {
+        $this->Route = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -125,5 +138,25 @@ class Entry
     public function getUser()
     {
         return $this->User;
+    }
+    
+    /**
+     * Add Route
+     *
+     * @param Route $route
+     */
+    public function addRoute(Route $route)
+    {
+        $this->Route[] = $route;
+    }
+
+    /**
+     * Get Route
+     *
+     * @return Collection
+     */
+    public function getRoute()
+    {
+        return $this->Route;
     }
 }

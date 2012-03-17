@@ -2,10 +2,11 @@
 namespace Caching\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Caching\BlogBundle\Entity\Route as Route;
+use Caching\BlogBundle\Entity\Route;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="point")
  */
 class Point
 {
@@ -27,7 +28,7 @@ class Point
     protected $longitude;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Route", inversedBy="Points")
+     * @ORM\ManyToOne(targetEntity="route", inversedBy="Points")
      * @ORM\JoinColumn(name="route_id", referencedColumnName="id")
      */
     protected $Route;
