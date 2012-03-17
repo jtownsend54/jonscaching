@@ -193,4 +193,5 @@ class HomeController extends Controller
             'json' => json_encode($json),
         ));
     }
+    
 }
