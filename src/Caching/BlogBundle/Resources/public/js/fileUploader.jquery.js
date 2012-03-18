@@ -161,6 +161,7 @@ if ( typeof Object.create !== 'function' ) {
                         formData.append(key, self.extraData[key]);
                     }
                 }
+                console.log(files[i]);
 
                 formData.append('file', files[i]);
 

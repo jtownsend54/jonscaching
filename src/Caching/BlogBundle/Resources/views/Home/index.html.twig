@@ -67,51 +67,13 @@
                 {{ entry.entry|raw }}
             </p>
             <div class="images fl">
+                {% for image in entry.EntryImages %}
                 <div class="image fl">
-                    <a href="{{ asset('images/fisk_property/views/icy_road.jpg') }}" rel="group1">
-                        <img class="fl" src="{{ asset('images/fisk_property/thumbs/icy_road_thumb.jpg') }}" />
+                    <a href="{{ asset(image.fullPath) }}" rel="group{{entry.id}}">
+                        <img class="fl" src="{{ asset(image.thumbPath) }}" />
                     </a>
                 </div>
-                <div class="image fl">
-                    <a href="{{ asset('images/fisk_property/views/mossy_rocks.jpg') }}" rel="group1">
-                        <img class="fl" src="{{ asset('images/fisk_property/thumbs/mossy_rocks_thumb.jpg') }}" />
-                    </a>
-                </div>
-                <div class="image fl">
-                    <a href="{{ asset('images/fisk_property/views/river_far_shoreline.jpg') }}" rel="group1">
-                        <img class="fl" src="{{ asset('images/fisk_property/thumbs/river_far_shoreline_thumb.jpg') }}" />
-                    </a>
-                </div>
-                <div class="image fl">
-                    <a href="{{ asset('images/fisk_property/views/river_background.jpg') }}" rel="group1">
-                        <img class="fl" src="{{ asset('images/fisk_property/thumbs/river_background_thumb.jpg') }}" />
-                    </a>
-                </div>
-                <div class="image fl">
-                    <a href="{{ asset('images/fisk_property/views/ducks.jpg') }}" rel="group1">
-                        <img class="fl" src="{{ asset('images/fisk_property/thumbs/ducks_thumb.jpg') }}" />
-                    </a>
-                </div>
-                <div class="image fl">
-                    <a href="{{ asset('images/fisk_property/views/trees.jpg') }}" rel="group1">
-                        <img class="fl" src="{{ asset('images/fisk_property/thumbs/trees_thumb.jpg') }}" />
-                    </a>
-                </div>
-                <div class="image fl">
-                    <a href="{{ asset('images/fisk_property/views/down_river.jpg') }}" rel="group1">
-                        <img class="fl" src="{{ asset('images/fisk_property/thumbs/down_river_thumb.jpg') }}" />
-                    </a>
-                </div>
-                <div class="image fl">
-                    <a href="{{ asset('images/fisk_property/views/near_shoreline.jpg') }}" rel="group1">
-                        <img class="fl" src="{{ asset('images/fisk_property/thumbs/near_shoreline_thumb.jpg') }}" />
-                    </a>
-                </div>
-                <div class="image fl">
-                    <a href="{{ asset('images/fisk_property/views/up_river.jpg') }}" rel="group1">
-                        <img class="fl" src="{{ asset('images/fisk_property/thumbs/up_river_thumb.jpg') }}" />
-                    </a>
-                </div>
+                {% endfor %}
             </div>
             <div class="clear"></div>
         </article>

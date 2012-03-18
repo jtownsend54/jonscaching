@@ -18,6 +18,7 @@ $loader->registerNamespaces(array(
     'Assetic'          => __DIR__.'/../vendor/assetic/src',
     'Metadata'         => __DIR__.'/../vendor/metadata/src',
     'JonsCaching'      => __DIR__.'/../vendor/gpxreader/lib',
+    'Imagine'          => __DIR__.'/../vendor/imagine/lib',
 ));
 $loader->registerPrefixes(array(
     'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',

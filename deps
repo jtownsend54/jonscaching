@@ -83,3 +83,7 @@
 [GpxReader]
     git=http://github.com/jtownsend54/GpxReader.git
     target=/gpxreader
+
+[Imagine]
+    git=http://github.com/avalanche123/Imagine.git
+    target=imagine

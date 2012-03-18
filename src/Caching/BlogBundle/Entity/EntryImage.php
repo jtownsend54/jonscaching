@@ -29,11 +29,6 @@ class EntryImage
     protected $thumbPath;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $folder;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Entry", inversedBy="EntryImages", cascade={"persist"})
      * @ORM\JoinColumn(name="entry_id", referencedColumnName="id")
      */
@@ -87,26 +82,6 @@ class EntryImage
     public function getThumbPath()
     {
         return $this->thumbPath;
-    }
-
-    /**
-     * Set folder
-     *
-     * @param string $folder
-     */
-    public function setFolder($folder)
-    {
-        $this->folder = $folder;
-    }
-
-    /**
-     * Get folder
-     *
-     * @return string
-     */
-    public function getFolder()
-    {
-        return $this->folder;
     }
 
     /**

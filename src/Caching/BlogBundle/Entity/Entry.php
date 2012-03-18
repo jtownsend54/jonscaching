@@ -50,7 +50,7 @@ class Entry
     /**
      * @ORM\OneToMany(targetEntity="EntryImage", mappedBy="Entry")
      */
-    protected $Images;
+    protected $EntryImages;
 
     public function __construct()
     {

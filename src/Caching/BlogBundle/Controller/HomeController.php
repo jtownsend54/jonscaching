@@ -11,9 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Caching\BlogBundle\Entity\Entry;
 use Caching\BlogBundle\Entity\Route;
 use Caching\BlogBundle\Entity\Point;
+use Caching\BlogBundle\Entity\EntryImage;
 use Caching\BlogBundle\Form\Type\EntryType;
 use Caching\BlogBundle\Form\Type\UploadType;
 use JonsCaching\GpxReader\GpxReader;
+use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,8 @@ class HomeController extends Controller
         $user       = $this->get('security.context')->getToken()->getUser();
         $em         = $this->getDoctrine()->getEntityManager();
         $entries    = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchAll();
+
+        //var_dump($entries);die;
 
         return $this->render('CachingBlogBundle:Home:index.html.twig', array(
             'user'      => $user,
@@ -171,27 +176,70 @@ class HomeController extends Controller
     {
         $file       = $request->files->get('file');
         $entryid    = $request->request->get('entry_id');
-        $entry      = $this->getDoctrine()->getEntityManager()
-                        ->getRepository('CachingBlogBundle:Entry')
+        $imagine    = new Imagine();
+        $em         = $this->getDoctrine()->getEntityManager();
+        $entry      = $em->getRepository('CachingBlogBundle:Entry')
                         ->find($entryid);
 
-        // Clone $file to $thumb
+        // Save image path and filename for later use
+        $rootPath           = $this->container->parameters['upload_dir'] . $entry->getRoute()->getFolderName();
+        $imageName          = $file->getClientOriginalName();
+        $fullImagePath      = $rootPath . '/fullsize/' . $imageName;
+        $relativeFullPath   = 'images/routes/' . $entry->getRoute()->getFolderName() . '/fullsize/';
+        $thumbImagePath     = $rootPath . '/thumbs/' . $imageName;
+        $relativeThumbPath  = 'images/routes/' . $entry->getRoute()->getFolderName() . '/thumbs/';
+        $thumbWidth         = $this->container->parameters['thumb_width'];
+        $fullsizeWidth      = $this->container->parameters['fullsize_width'];
 
-        // Resize $thumb to fit in masonry
+        // Move a copy in the fullsize and thumbs directory
+        $file->move($rootPath . '/fullsize/', $imageName);
 
-        // move $thumb into /images/route/{route}/thumbs/
+        // Get the uploaded image width and height
+        $origImageSize  = getimagesize($fullImagePath);
 
-        // move $file into /images/route/{route}/fulls/
-        $file->move($this->container->parameters['upload_dir'] . $entry->getRoute()->getFolderName(), $file->getClientOriginalName());
+        // Create Imagine instance for full size image
+        $fullsizeImage  = $imagine->open($fullImagePath);
+
+        // Calculate the height for each image, keeping scale the same
+        $newFullHeight  = $fullsizeWidth / ($origImageSize[0] / $origImageSize[1]);
+        $newThumbHeight = $thumbWidth / ($origImageSize[0] / $origImageSize[1]);
+
+        // Resize and save the fullsize image
+        $fullsizeImage->resize(new Box($fullsizeWidth, $newFullHeight))
+            ->save($fullImagePath);
+
+        // If there is no directory for the thumb image, create one or an error will happen when
+        // trying to copy
+        if (!is_dir($relativeThumbPath)) {
+            mkdir($relativeThumbPath, 0777, true);
+        }
+
+        // Make a thumb copy of the full image
+        copy($fullImagePath, $thumbImagePath);
+
+        // Resize and save the thumb image
+        $thumbImage     = $imagine->open($thumbImagePath);
+        $thumbImage->resize(new Box($thumbWidth, $newThumbHeight))
+            ->save($thumbImagePath);
+
+        $entryImage = new EntryImage();
+        $entryImage->setEntry($entry);
+        $entryImage->setFullPath($relativeFullPath . $imageName);
+        $entryImage->setThumbPath($relativeThumbPath . $imageName);
+        $em->persist($entryImage);
+
+        $entry->addImage($entryImage);
+
+        $em->flush();
 
         $json = array(
             'success'   => 1,
             'entry_id'  => $entryid,
         );
 
+        // Return the json response
         return $this->render('CachingBlogBundle:Home:json.html.twig', array(
             'json' => json_encode($json),
         ));
     }
-    
 }

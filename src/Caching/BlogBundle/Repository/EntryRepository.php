@@ -18,9 +18,10 @@ class EntryRepository extends EntityRepository
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
         
-        $query = $qb->select('e, r')
+        $query = $qb->select('e, r, i')
             ->from($this->getEntityName(), 'e')
             ->leftJoin('e.Route', 'r')
+            ->leftJoin('e.EntryImages', 'i')
             ->orderBy('e.created', 'DESC')
             ->getQuery();
         
