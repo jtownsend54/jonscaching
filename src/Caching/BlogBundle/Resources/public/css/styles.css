@@ -27,4 +27,8 @@ form textarea {
 .images {
 }
 
+/**** Fancybox overrides ****/
+#fancybox-left,
+#fancybox-right {
+    width:25%;
 }
