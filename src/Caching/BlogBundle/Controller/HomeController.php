@@ -172,6 +172,10 @@ class HomeController extends Controller
         ));
     }
 
+    public function buildingBlocksAction() {
+        return $this->render('CachingBlogBundle:Home:building_blocks.html.twig');
+    }
+
     public function uploadPhotoAction(Request $request)
     {
         $file       = $request->files->get('file');

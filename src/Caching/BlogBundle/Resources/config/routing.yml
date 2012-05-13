@@ -16,15 +16,15 @@ logout:
 create_entry:
     pattern: /create
     defaults: { _controller: CachingBlogBundle:Home:create }
-    
-upload_gpx_file:
-    pattern: /uploadGpx
-    defaults: { _controller: CachingBlogBundle:Home:uploadGpx }
-    
+
 view_route:
     pattern: /route/{id}
     defaults: { _controller: CachingBlogBundle:Home:viewRoute }
 
 upload_photo:
-    pattern: /upload_photo
+    pattern: /upload-photo
     defaults: { _controller: CachingBlogBundle:Home:uploadPhoto }
+
+building_blocks:
+    pattern: /building-blocks
+    defaults: { _controller: CachingBlogBundle:Home:buildingBlocks }
