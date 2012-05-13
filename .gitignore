@@ -15,3 +15,4 @@ src/Caching/BlogBundle/Resources/config/parameters.ini
 update-vendors
 .DS_Store
 web/.htaccess
+web/compiled/
