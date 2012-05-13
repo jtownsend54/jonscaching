@@ -59,7 +59,7 @@ function flashMessage(msg, type)
 }
 
 $('div#uploader').fileUploader({
-    upload_url: '/app_dev.php/upload_photo'
+    upload_url: '/upload-photo'
 });
 
 $('div.container').on('click', 'button.show-uploader', function() {
