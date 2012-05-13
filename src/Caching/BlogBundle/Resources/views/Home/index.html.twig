@@ -12,81 +12,101 @@
     %}
     <link rel="stylesheet" href="{{ asset('compiled/css/compiled_styles.css') }}" />
     {% endstylesheets %}
+
 {% endblock %}
 
 {% block body %}
     <div class="container">
-    {% if is_granted('ROLE_ADMIN') %}
-        <h2>Welcome back {{ user.username }}</h2>
-        <form id="new-entry" action="{{ path('create_entry') }}" method="post" {{ form_enctype(form) }}>
-            {{ form_errors(form) }}
-            <div class="row">
-                <div class="span4">
-                    <div class="form-part">
-                        {{ form_label(form.title, 'Entry Title', { 'attr': {'class': 'span1'} }) }}
-                        <div class="input">
-                            {{ form_widget(form.title, { 'attr': {'class': 'span2'} }) }}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <h2>Welcome back {{ user.username }}</h2>
+            <form id="new-entry" action="{{ path('create_entry') }}" method="post" {{ form_enctype(form) }}>
+                {{ form_errors(form) }}
+                <div class="row">
+                    <div class="span4">
+                        <div class="form-part">
+                            {{ form_label(form.title, 'Entry Title', { 'attr': {'class': 'span1'} }) }}
+                            <div class="input">
+                                {{ form_widget(form.title, { 'attr': {'class': 'span2'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-part">
+                            {{ form_label(form.route_area, 'Route Area', { 'attr': {'class': 'span1'} }) }}
+                            <div class="input">
+                                {{ form_widget(form.route_area, { 'attr': {'class': 'span2'} }) }}
+                            </div>
+                        </div>
+                        <div class="form-part">
+                            {{ form_label(form.attachment, 'Route File (.gpx)', { 'attr': {'class': 'span1'} }) }}
+                            <div class="input">
+                                {{ form_widget(form.attachment, { 'attr': {'class': 'span2'} }) }}
+                            </div>
                         </div>
                     </div>
-                    <div class="form-part">
-                        {{ form_label(form.route_area, 'Route Area', { 'attr': {'class': 'span1'} }) }}
-                        <div class="input">
-                            {{ form_widget(form.route_area, { 'attr': {'class': 'span2'} }) }}
-                        </div>
-                    </div>
-                    <div class="form-part">
-                        {{ form_label(form.attachment, 'Route File (.gpx)', { 'attr': {'class': 'span1'} }) }}
-                        <div class="input">
-                            {{ form_widget(form.attachment, { 'attr': {'class': 'span2'} }) }}
+                    <div class="span8">
+                        <div class="form-part">
+                            {{ form_label(form.entry, 'Entry', { 'attr': {'class': 'span1'} }) }}
+                            <div class="input">
+                                {{ form_widget(form.entry, { 'attr': {'class': 'span6'} }) }}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="span8">
-                    <div class="form-part">
-                        {{ form_label(form.entry, 'Entry', { 'attr': {'class': 'span1'} }) }}
-                        <div class="input">
-                            {{ form_widget(form.entry, { 'attr': {'class': 'span6'} }) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{ form_rest(form) }}
+                {{ form_rest(form) }}
 
-            <input type="submit" value="Add Entry" class="btn btn-primary"/>
-        </form>
-    {% endif %}
+                <input type="submit" value="Add Entry" class="btn btn-primary"/>
+            </form>
+        {% endif %}
 
-    {% for entry in entries %}
-        <article class="entry">
-            <h1>{{ entry.title }}</h1>
-            <h4><a href="{{ path('view_route', { 'id': entry.Route.id }) }}">{{ entry.Route.area }}</a> {{ entry.created|date('F j, Y') }}</h4>
-            {% if is_granted('ROLE_ADMIN') %}
-            <button class="btn btn-primary show-uploader" data-entry-id="{{ entry.id }}">Add Images<i class="icon-picture"></i></button>
-            <div class="clear"></div>
-            {% endif %}
-            <p class="fl">
-                {{ entry.entry|raw }}
+        <div class="hero-unit">
+            <h1><span class="thinner">Photo</span>Caching</h1>
+            <p>My adventures delving into geocaching, photography, and web development.</p>
+            <p>
+                <a class="btn btn-primary btn-large" href="/">Home</a>
+                <a class="btn btn-primary btn-large" href="http://www.geocaching.com/videos/default.aspx#cat=cat:newbies&vid=-4VFeYZTTYs" target="_blank">What's Geocaching?</a>
+                <a class="btn btn-primary btn-large" href="/building-blocks">Building Blocks</a>
             </p>
-            <div class="images fl">
-                {% for image in entry.EntryImages %}
-                <div class="image fl">
-                    <a href="{{ asset(image.fullPath) }}" rel="group{{entry.id}}">
-                        <img class="fl" src="{{ asset(image.thumbPath) }}" />
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="clear"></div>
-        </article>
-    {% endfor %}
+        </div>
+
+        {% block content %}
+            {% for entry in entries %}
+                <article class="entry">
+                    <h2 class="title">{{ entry.title }}</h2>
+                    <h4 class="subtitle">
+                        <span class="thinner">{{ entry.created|date('F j, Y') }}</span>
+                        <a class="google-map iframe" href="{{ path('view_route', { 'id': entry.Route.id }) }}">{{ entry.Route.area }}</a>
+                    </h4>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <button class="btn btn-primary show-uploader" data-entry-id="{{ entry.id }}">Add Images<i class="icon-picture"></i></button>
+                        <div class="clear"></div>
+                    {% endif %}
+
+                    <p class="text fl">
+                        {{ entry.entry|raw }}
+                    </p>
+                    <div class="images fl">
+                        {% for image in entry.EntryImages %}
+                            <div class="image fl">
+                                <a href="{{ asset(image.fullPath) }}" rel="group{{entry.id}}">
+                                    <img class="fl" src="{{ asset(image.thumbPath) }}" />
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="clear"></div>
+                </article>
+            {% endfor %}
+        {% endblock %}
+
     </div>
     <div id="uploader" style="display:none"></div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/fancybox/jquery.fancybox-1.3.4.pack.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/masonry/jquery.masonry.min.js') }}" type="text/javascript"></script>

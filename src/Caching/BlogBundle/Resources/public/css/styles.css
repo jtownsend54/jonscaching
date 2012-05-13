@@ -1,13 +1,38 @@
+body {
     background:url('/bundles/cachingblog/images/bg3.jpg') repeat;
+    margin-top:30px;
+}
+
 .fl { float:left; }
 .fr { float:right; }
 .clear { clear:both; }
 
-.entry {
-    margin-bottom:50px;
+.thinner {
+    font-weight:200;
 }
 
-.entry p {
+.hero-unit,
+.entry {
+    border:1px solid #dedede;
+}
+
+.entry {
+    margin-bottom:30px;
+    padding:10px;
+    background-color: #f5f5f5;
+    border-radius:6px;
+    /*box-shadow: 0px 0px 5px #333;*/
+}
+
+.entry .title {
+    line-height:22px;
+}
+
+.entry .subtitle {
+    margin-bottom:15px;
+}
+
+.entry .text {
     width:390px;
     text-align:justify;
 }
@@ -25,6 +50,8 @@ form textarea {
 }
 
 .images {
+    width:500px;
+    margin-left:28px;
 }
 
 /**** Fancybox overrides ****/
