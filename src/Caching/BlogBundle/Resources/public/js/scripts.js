@@ -43,6 +43,10 @@ $(document).ready(function() {
     });
 
     $('.images a').fancybox();
+    $('a.google-map').fancybox({
+        width: 600,
+        height: 500
+    });
 
     $('#fancybox-wrap').on('click', 'img', function() {
         $.fancybox.next();

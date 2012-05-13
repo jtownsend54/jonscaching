@@ -1,14 +1,10 @@
 {% extends 'CachingBlogBundle:Home:index.html.twig' %}
 
-{% block title %}{{ route.area }}{% endblock %}
-
 {% block body %}
-    <h1>
-        {{ route.area }}
-    </h1>
     <div id="map-canvas" style="width:600px;height:500px"></div>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAfSSsh5P0kxnOijacuGqijvt1-1h-cBGg&sensor=false&libraries=polyline" type="text/javascript"></script>
     <script>
-        function initialize() {
+        (function() {
             var latlng = new google.maps.LatLng({{ avgLat }}, {{ avgLong }});
             var myOptions = {
                 zoom: 14,
@@ -30,11 +26,7 @@
               });
 
             flightPath.setMap(map);
-        }
+        })();
     </script>
 {% endblock %}
 
-{% block javascripts %}
-{{ parent() }}
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAfSSsh5P0kxnOijacuGqijvt1-1h-cBGg&sensor=false&libraries=polyline" type="text/javascript"></script>
-{% endblock %}
