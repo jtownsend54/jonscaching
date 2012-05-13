@@ -44,7 +44,7 @@ $(document).ready(function() {
 
     $('.images a').fancybox();
     $('a.google-map').fancybox({
-        width: 600,
+        width: 615,
         height: 500
     });
 
