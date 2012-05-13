@@ -1,0 +1,74 @@
+@dark-grey:#333333;
+@skinny-text:200;
+
+.basic-gradient (@start, @end) {
+    background: @start;
+    background: -moz-linear-gradient(top, @start 0%, @end 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @start), color-stop(100%, @end));
+    background: -webkit-linear-gradient(top, @start 0%, @end 100%);
+    background: -o-linear-gradient(top, @start 0%, @end 100%);
+    background: -ms-linear-gradient(top, @start 0%, @end 100%);
+    background: linear-gradient(top, @start 0%, @end 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=@start, endColorstr=@end,GradientType=0 );
+}
+
+#uploader {
+    height:220px;
+    border:1px solid @dark-grey;
+    background:#efefef;
+    overflow:hidden;
+    margin-top:-200px;
+
+    #files {
+        overflow-y:scroll;
+        overflow-x:hidden;
+        height:168px;
+        width:auto;
+
+        .file {
+            height:25px;
+            padding-top:5px;
+            .basic-gradient(#efefef, #dcdcdc);
+
+            i {
+                margin:2px 0 0 2px;
+                cursor:pointer;
+            }
+
+            .span5 {
+                margin-left:4px;
+            }
+        }
+    }
+
+    .row {
+        margin-left:0;
+        font-weight:@skinny-text;
+    }
+
+    .title-bar {
+        background:@dark-grey;
+        height:22px;
+        width:auto;
+        font-weight:@skinny-text;
+        font-size:18px;
+        color:white;
+    }
+
+    #filebar {
+        height:30px;
+        background:@dark-grey;
+
+        .btn {
+            padding:0 8px;
+            height:20px;
+            font-weight:bold;
+            margin:5px 0 0 20px;
+            position:relative;
+
+            i {
+                margin: 2px 0 0 2px;
+            }
+        }
+    }
+}

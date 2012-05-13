@@ -1,16 +1,17 @@
 {% extends '::base.html.twig' %}
 
 {% block stylesheets %}
-{{ parent() }}
-{% stylesheets
-    '@CachingBlogBundle/Resources/public/css/*'
-    output='css/styles.css'
-%}
+    {{ parent() }}
     <link href="{{ asset('js/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('js/jquery-ui-1.8.16.custom/css/eggplant/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('js/fancybox/jquery.fancybox-1.3.4.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="{{ asset_url }}" />
-{% endstylesheets %}
+    <link href="{{ asset('bundles/cachingblog/css/styles.css') }}" rel="stylesheet" type="text/css" />
+
+    {% stylesheets filter='less' output='compiled/css/compiled_styles.css'
+        '@CachingBlogBundle/Resources/public/less/fileuploader.less'
+    %}
+    <link rel="stylesheet" href="{{ asset('compiled/css/compiled_styles.css') }}" />
+    {% endstylesheets %}
 {% endblock %}
 
 {% block body %}
