@@ -50,10 +50,10 @@ if ( typeof Object.create !== 'function' ) {
                 .parent();
 
             var files = $(document.createElement('div'))
-                .attr('id', 'files');
+                .addClass('files');
 
             var toolbar = $(document.createElement('div'))
-                .attr('id', 'filebar')
+                .addClass('filebar')
                 .append(document.createElement('button'))
                     .children('button')
                     .attr('id', 'upload')
@@ -115,7 +115,7 @@ if ( typeof Object.create !== 'function' ) {
                 .next()
                 .text(Math.round(file.fileSize / 1024 * 100) / 100 + ' KB')
                 .parent()
-                .appendTo(self.$element.children('div#files'));
+                .appendTo(self.$element.children('div.files'));
         },
         removeFile: function($this, self) {
             var $this       = $this,
@@ -142,7 +142,7 @@ if ( typeof Object.create !== 'function' ) {
             }
         },
         clearList: function(self) {
-            self.$element.find('div#files').html('');
+            self.$element.find('div.files').html('');
             self.files = [];
             self.$element.find('button').addClass('disabled');
         },
