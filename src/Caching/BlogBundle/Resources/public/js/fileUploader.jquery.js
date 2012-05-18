@@ -111,9 +111,9 @@ if ( typeof Object.create !== 'function' ) {
             // then diplay it in the file list
             fileHtml
                 .find('span:nth-child(2)')
-                .text(file.fileName)
+                .text(file.name)
                 .next()
-                .text(Math.round(file.fileSize / 1024 * 100) / 100 + ' KB')
+                .text(Math.round(file.size / 1024 * 100) / 100 + ' KB')
                 .parent()
                 .appendTo(self.$element.children('div.files'));
         },
