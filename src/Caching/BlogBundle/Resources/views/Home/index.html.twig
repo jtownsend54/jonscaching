@@ -3,20 +3,31 @@
 {% block stylesheets %}
     {{ parent() }}
 
-    <link href="{{ asset('js/jquery-ui-1.8.16.custom/css/eggplant/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('bundles/cachingblog/js/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    {#<link href="{{ asset('js/jquery-ui-1.8.16.custom/css/eggplant/jquery-ui-1.8.16.custom.css') }}" rel="stylesheet" type="text/css" />#}
+    <link href="{{ asset('bundles/cachingblog/js/fancybox/jquery.fancybox-1.3.4.css') }}" rel="stylesheet" type="text/css" />
+    {#<link href="{{ asset('bundles/cachingblog/css/styles.css') }}" rel="stylesheet" type="text/css" />#}
 
+    {#{% stylesheets filter='less' output='compiled/css/compiled_styles.css'#}
+        {#'@CachingBlogBundle/Resources/public/less/fileuploader.less'#}
+    {#%}#}
+        {#<link rel="stylesheet" href="{{ asset('compiled/css/compiled_styles.css') }}" />#}
+    {#{% endstylesheets %}#}
+
+     {#Combined LESS assets #}
     {% stylesheets filter='less,cssrewrite,yui_css' output='compiled/css/compiled_styles.css'
-        '@CachingBlogBundle/Resources/public/less/*'
+        'bundles/cachingblog/less/*'
     %}
         <link rel="stylesheet" href="{{ asset('compiled/css/compiled_styles.css') }}" />
     {% endstylesheets %}
 
-    {% stylesheets filter='cssrewrite,yui_css' output='compiled/css/compiled_libraries.css'
-        '@CachingBlogBundle/Resources/public/js/fancybox/jquery.fancybox-1.3.4.css'
-        '@CachingBlogBundle/Resources/public/js/bootstrap/css/bootstrap.css'
-    %}
-        <link rel="stylesheet" href="{{ asset('compiled/css/compiled_libraries.css') }}" />
-    {% endstylesheets %}
+     {#Combined CSS assets #}
+    {#{% stylesheets filter='yui_css' output='compiled/css/compiled_libraries.css'#}
+        {#'bundles/cachingblog/js/fancybox/jquery.fancybox-1.3.4.css'#}
+        {#'bundles/cachingblog/js/bootstrap/css/bootstrap.css'#}
+    {#%}#}
+        {#<link rel="stylesheet" href="{{ asset('compiled/css/compiled_libraries.css') }}" />#}
+    {#{% endstylesheets %}#}
 
 {% endblock %}
 
@@ -67,9 +78,9 @@
             <h1><span class="thinner">Photo</span>Caching</h1>
             <p>My adventures delving into geocaching, photography, and web development.</p>
             <p>
-                <a class="btn btn-primary btn-large" href="/">Home</a>
+                {#<a class="btn btn-primary btn-large" href="/">Home</a>#}
                 <a class="btn btn-primary btn-large" href="http://www.geocaching.com/videos/default.aspx#cat=cat:newbies&vid=-4VFeYZTTYs" target="_blank">What's Geocaching?</a>
-                <a class="btn btn-primary btn-large" href="/building-blocks">Building Blocks</a>
+                {#<a class="btn btn-primary btn-large" href="/building-blocks">Building Blocks</a>#}
             </p>
         </div>
 
@@ -121,4 +132,8 @@
     %}
         <script type="text/javascript" src="{{ asset('compiled/js/compiled.js') }}"></script>
     {% endjavascripts %}
+
+
+
+
 {% endblock %}

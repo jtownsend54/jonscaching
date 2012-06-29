@@ -1,3 +1,6 @@
+@thumbTransition: .5s;
+@thumbScale: 1.2;
+
 body {
     background:url('/bundles/cachingblog/images/bg3.jpg') repeat;
     overflow-y:scroll;
@@ -21,6 +24,7 @@ body {
     padding:10px;
     background-color: #f5f5f5;
     border-radius:6px;
+    margin-bottom:15px;
 
     .title {
         line-height:22px;
@@ -53,6 +57,24 @@ form {
 .images {
     width:500px;
     margin-left:28px;
+
+    img {
+        -webkit-transition: all @thumbTransition;
+        -moz-transition: all @thumbTransition;
+        -o-transition: all @thumbTransition;
+        -ms-transition: all @thumbTransition;
+        transition: all @thumbTransition;
+
+        &:hover {
+            -webkit-transform: scale(@thumbScale);
+            -moz-transform: scale(@thumbScale);
+            -o-transform: scale(@thumbScale);
+            -ms-transform: scale(@thumbScale);
+            transform: scale(@thumbScale);
+            z-index: 10;
+            position: relative;
+        }
+    }
 }
 
 /**** Fancybox overrides ****/
