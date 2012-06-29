@@ -1,7 +1,3 @@
-_cachingBlogBundle:
-    resource: "@CachingBlogBundle/Resources/config/routing.yml"
-    prefix: /
-
 _assetic:
     resource: .
     type:     assetic

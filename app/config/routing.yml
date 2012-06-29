@@ -2,3 +2,7 @@
 #_internal:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #   prefix:   /_internal
+
+_cachingBlogBundle:
+    resource: "@CachingBlogBundle/Resources/config/routing.yml"
+    prefix: /
