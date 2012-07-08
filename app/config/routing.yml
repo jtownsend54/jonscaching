@@ -3,10 +3,6 @@
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #   prefix:   /_internal
 
-_assetic:
-    resource: .
-    type:     assetic
-
 _cachingBlogBundle:
     resource: "@CachingBlogBundle/Resources/config/routing.yml"
     prefix: /
