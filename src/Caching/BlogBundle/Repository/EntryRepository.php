@@ -2,6 +2,7 @@
 
 namespace Caching\BlogBundle\Repository;
 
+use Caching\BlogBundle\Entity\Entry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 
@@ -22,6 +23,7 @@ class EntryRepository extends EntityRepository
             ->from($this->getEntityName(), 'e')
             ->leftJoin('e.Route', 'r')
             ->leftJoin('e.EntryImages', 'i')
+            ->where($qb->expr()->eq('e.active', Entry::ACTIVE))
             ->orderBy('e.created', 'DESC')
             ->getQuery();
         

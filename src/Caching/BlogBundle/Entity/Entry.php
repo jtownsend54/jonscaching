@@ -13,6 +13,9 @@ use Caching\BlogBundle\Entity\EntryImage;
  */
 class Entry
 {
+    const ACTIVE = 1;
+    const INACTIVE = 0;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -34,7 +37,12 @@ class Entry
      * @ORM\Column(type="text")
      */
     protected $entry;
-    
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $active;
+
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="Entries", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -118,9 +126,29 @@ class Entry
     }
 
     /**
+     * Get the active state of an entry
+     *
+     * @return bool
+     */
+    public function isActive()
+    {
+        return (bool) $this->active;
+    }
+
+    /**
+     * Set the active state of an entry
+     *
+     * @param integer $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
+    /**
      * Get entry
      *
-     * @return text 
+     * @return text
      */
     public function getEntry()
     {

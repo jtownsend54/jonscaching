@@ -27,8 +27,6 @@ class HomeController extends Controller
         $em         = $this->getDoctrine()->getEntityManager();
         $entries    = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchAll();
 
-        //var_dump($entries);die;
-
         return $this->render('CachingBlogBundle:Home:index.html.twig', array(
             'user'      => $user,
             'form'      => $form->createView(),
