@@ -73,6 +73,7 @@ class HomeController extends Controller
                 $entry->setTitle($formData['title']);
                 $entry->setEntry($formData['entry']);
                 $entry->setUser($user);
+                $entry->setActive(Entry::ACTIVE);
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($entry);
 
