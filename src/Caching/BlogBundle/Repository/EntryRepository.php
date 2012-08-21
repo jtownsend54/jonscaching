@@ -14,19 +14,35 @@ use Doctrine\ORM\Query;
  */
 class EntryRepository extends EntityRepository
 {
-    public function fetchAll()
+    public function getBaseQuery()
     {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
-        
-        $query = $qb->select('e, r, i')
+
+        $qb = $qb->select('e, r')
             ->from($this->getEntityName(), 'e')
             ->leftJoin('e.Route', 'r')
-            ->leftJoin('e.EntryImages', 'i')
             ->where($qb->expr()->eq('e.active', Entry::ACTIVE))
-            ->orderBy('e.created', 'DESC')
-            ->getQuery();
-        
-        return $query->getResult(Query::HYDRATE_ARRAY);
+            ->orderBy('e.created', 'DESC');
+
+        return $qb;
     }
+
+    /**
+     * Get the initial number of post to load on the page
+     *
+     * @param $limit Number of posts
+     * @return mixed
+     */
+    public function fetchInitial($limit)
+    {
+        $qb     = $this->getBaseQuery();
+        $query  = $qb->getQuery();
+
+        $query->setMaxResults($limit);
+
+        return $query->getResult(Query::HYDRATE_OBJECT);
+    }
+
+
 }

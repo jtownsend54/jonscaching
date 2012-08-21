@@ -25,12 +25,14 @@ class HomeController extends Controller
         $form       = $this->createForm(new EntryType());
         $user       = $this->get('security.context')->getToken()->getUser();
         $em         = $this->getDoctrine()->getEntityManager();
-        $entries    = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchAll();
+        $limit      = $this->container->parameters['initial_limit'];
+        $entries    = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchInitial($limit);
 
         return $this->render('CachingBlogBundle:Home:index.html.twig', array(
             'user'      => $user,
             'form'      => $form->createView(),
             'entries'   => $entries,
+            'limit'     => $limit,
         ));
     }
     
