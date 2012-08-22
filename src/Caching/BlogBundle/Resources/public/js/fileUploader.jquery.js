@@ -28,9 +28,12 @@ if ( typeof Object.create !== 'function' ) {
             self.build();
 
             // Add event listeners for drag and drop events, and buttons
-            self.element.addEventListener('dragenter', self.doNothing, false);
-            self.element.addEventListener('dragover', self.doNothing, false);
-            self.element.addEventListener('drop', function(e) { self.dropFiles(e); }, false);
+            if (self.addEventListener) {
+                self.element.addEventListener('dragenter', self.doNothing, false);
+                self.element.addEventListener('dragover', self.doNothing, false);
+                self.element.addEventListener('drop', function(e) { self.dropFiles(e); }, false);
+            }
+            
             self.$element.on('click', 'button#clear', function() { self.clearList(self) });
             self.$element.on('click', 'button#upload', function() { self.uploadFiles(self); });
         },
