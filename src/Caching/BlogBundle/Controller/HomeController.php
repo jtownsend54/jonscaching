@@ -247,4 +247,37 @@ class HomeController extends Controller
             'json' => json_encode($json),
         ));
     }
+
+    public function loadArticleAction()
+    {
+        $request = $this->getRequest();
+
+        if ($request->isXmlHttpRequest()) {
+            $em         = $this->getDoctrine()->getEntityManager();
+            $offset     = $request->request->get('offset');
+
+            try {
+                $entry      = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchNextPost($offset);
+                $html = $this->renderView('CachingBlogBundle:Home:entry.html.twig', array(
+                    'entry' => $entry,
+                ));
+
+                $json = array(
+                    'success'       => 1,
+                    'new_offset'    => $offset + 1,
+                    'html'          => $html,
+                );
+            } catch (\Doctrine\ORM\NoResultException $e) {
+                $json = array(
+                    'success'       => 0,
+                    'new_offset'    => 'done',
+                );
+            }
+
+            // Return the json response
+            return $this->render('CachingBlogBundle:Home:json.html.twig', array(
+                'json' => json_encode($json),
+            ));
+        }
+    }
 }

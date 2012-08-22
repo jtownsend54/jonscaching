@@ -18,7 +18,7 @@
     {% stylesheets filter='less,cssrewrite,yui_css' output='compiled/css/compiled_styles.css'
         'bundles/cachingblog/less/*'
     %}
-        <link rel="stylesheet" href="{{ asset('compiled/css/compiled_styles.css') }}" />
+        <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
      {#Combined CSS assets #}
@@ -93,7 +93,11 @@
                 {% include 'CachingBlogBundle:Home:entry.html.twig' with { 'entry': entry } %}
             {% endfor %}
         {% endblock %}
-
+        <p class="txt-center">
+            Thanks for visiting!
+            <br />
+            &copy; {{ 'now'|date('Y') }} PhotoCacher
+        </p>
         <input type="hidden" id="post-count" value="{{ limit }}" />
     </div>
     <div id="uploader" style="display:none"></div>

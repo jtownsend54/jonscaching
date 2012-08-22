@@ -44,5 +44,14 @@ class EntryRepository extends EntityRepository
         return $query->getResult(Query::HYDRATE_OBJECT);
     }
 
+    public function fetchNextPost($offset)
+    {
+        $qb     = $this->getBaseQuery();
+        $query  = $qb->getQuery();
 
+        $query->setMaxResults(1);
+        $query->setFirstResult($offset);
+
+        return $query->getSingleResult(Query::HYDRATE_OBJECT);
+    }
 }
