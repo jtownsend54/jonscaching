@@ -1,0 +1,26 @@
+<article class="entry">
+    <h2 class="title">{{ entry.title }}</h2>
+    <h4 class="subtitle">
+        <span class="thinner">{{ entry.created|date('F j, Y') }}</span>
+        <a class="google-map iframe" href="{{ path('view_route', { 'id': entry.Route.id }) }}">{{ entry.Route.area }}</a>
+    </h4>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <button class="btn btn-primary show-uploader" data-entry-id="{{ entry.id }}">Add Images<i class="icon-picture"></i></button>
+        <div class="clear"></div>
+    {% endif %}
+
+    <p class="text fl">
+        {{ entry.entry|raw }}
+    </p>
+    <div class="images fl">
+        {% for image in entry.Images %}
+            <div class="image fl">
+                <a href="{{ asset(image.fullPath) }}" rel="group{{entry.id}}">
+                    <img class="fl" src="{{ asset(image.thumbPath) }}" />
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="clear"></div>
+</article>

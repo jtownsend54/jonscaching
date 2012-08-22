@@ -25,12 +25,14 @@ class HomeController extends Controller
         $form       = $this->createForm(new EntryType());
         $user       = $this->get('security.context')->getToken()->getUser();
         $em         = $this->getDoctrine()->getEntityManager();
-        $entries    = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchAll();
+        $limit      = $this->container->parameters['initial_limit'];
+        $entries    = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchInitial($limit);
 
         return $this->render('CachingBlogBundle:Home:index.html.twig', array(
             'user'      => $user,
             'form'      => $form->createView(),
             'entries'   => $entries,
+            'limit'     => $limit,
         ));
     }
     
@@ -244,5 +246,38 @@ class HomeController extends Controller
         return $this->render('CachingBlogBundle:Home:json.html.twig', array(
             'json' => json_encode($json),
         ));
+    }
+
+    public function loadArticleAction()
+    {
+        $request = $this->getRequest();
+
+        if ($request->isXmlHttpRequest()) {
+            $em         = $this->getDoctrine()->getEntityManager();
+            $offset     = $request->request->get('offset');
+
+            try {
+                $entry      = $em->getRepository('Caching\BlogBundle\Entity\Entry')->fetchNextPost($offset);
+                $html = $this->renderView('CachingBlogBundle:Home:entry.html.twig', array(
+                    'entry' => $entry,
+                ));
+
+                $json = array(
+                    'success'       => 1,
+                    'new_offset'    => $offset + 1,
+                    'html'          => $html,
+                );
+            } catch (\Doctrine\ORM\NoResultException $e) {
+                $json = array(
+                    'success'       => 0,
+                    'new_offset'    => 'done',
+                );
+            }
+
+            // Return the json response
+            return $this->render('CachingBlogBundle:Home:json.html.twig', array(
+                'json' => json_encode($json),
+            ));
+        }
     }
 }

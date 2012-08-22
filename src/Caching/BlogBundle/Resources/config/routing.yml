@@ -25,6 +25,10 @@ upload_photo:
     pattern: /upload-photo
     defaults: { _controller: CachingBlogBundle:Home:uploadPhoto }
 
+load_article:
+    pattern: /load-article
+    defaults: { _controller: CachingBlogBundle:Home:loadArticle }
+
 building_blocks:
     pattern: /building-blocks
     defaults: { _controller: CachingBlogBundle:Home:buildingBlocks }

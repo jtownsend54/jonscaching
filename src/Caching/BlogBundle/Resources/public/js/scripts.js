@@ -33,14 +33,7 @@ $(document).ready(function() {
         initialize();
     }
 
-    var images = $('.images');
-
-    images.imagesLoaded(function() {
-        images.masonry({
-            itemSelector    : '.image',
-            isAnimated      : true
-        });
-    });
+    masonify($('.images'));
 
     $('.images a').fancybox();
     $('a.google-map').fancybox({
@@ -51,7 +44,31 @@ $(document).ready(function() {
     $('#fancybox-wrap').on('click', 'img', function() {
         $.fancybox.next();
     });
+
+    var count;
+    var ready = true;
+
+    $(window).scroll(function(){
+        if ($(window).scrollTop() >= parseInt($(document).height() - $(window).height() - 300) && ready) {
+            ready = false;
+            count = $('input#post-count').val();
+            if (count != 'done') {
+                $.when(loadArticle(count)).done(function() {
+                    ready = true;
+                });
+            }
+        }
+    });
 });
+
+function masonify(ele) {
+    ele.imagesLoaded(function() {
+        ele.masonry({
+            itemSelector    : '.image',
+            isAnimated      : true
+        });
+    });
+}
 
 function flashMessage(msg, type)
 {
@@ -69,3 +86,28 @@ $('div.container').on('click', 'button.show-uploader', function() {
         test: 'test'
     }).modal();
 });
+
+function loadArticle(pageNumber){
+    return $.ajax({
+            url: "/load-article",
+            type:'POST',
+            dataType:'json',
+            data: {
+                offset: pageNumber
+            },
+            success: function(data) {
+                $('input#post-count').val(data.new_offset);
+
+                if (data.success) {
+                    $('div.container').find('.entry:last').after(data.html);
+                    var images = $('.entry:last').find('.images');
+                    masonify(images);
+                    images.find('a').fancybox();
+                    $('.entry:last').find('a.google-map').fancybox({
+                        width: 615,
+                        height: 500
+                    });
+                }
+            }
+        });
+}
