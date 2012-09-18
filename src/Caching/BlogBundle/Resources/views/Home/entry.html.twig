@@ -2,7 +2,10 @@
     <h2 class="title">{{ entry.title }}</h2>
     <h4 class="subtitle">
         <span class="thinner">{{ entry.created|date('F j, Y') }}</span>
-        <a class="google-map iframe" href="{{ path('view_route', { 'id': entry.Route.id }) }}">{{ entry.Route.area }}</a>
+
+        {% if entry.Route.id is defined %}
+            <a class="google-map iframe" href="{{ path('view_route', { 'id': entry.Route.id }) }}">{{ entry.Route.area }}</a>
+        {% endif %}
     </h4>
 
     {% if is_granted('ROLE_ADMIN') %}
