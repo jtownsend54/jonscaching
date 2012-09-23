@@ -69,6 +69,11 @@ class Route
         return $this->Points;
     }
 
+    public function hasPoints()
+    {
+        return $this->Points->count() > 0;
+    }
+
     /**
      * Set area
      *

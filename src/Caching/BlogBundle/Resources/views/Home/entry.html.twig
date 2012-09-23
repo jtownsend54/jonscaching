@@ -3,7 +3,7 @@
     <h4 class="subtitle">
         <span class="thinner">{{ entry.created|date('F j, Y') }}</span>
 
-        {% if entry.Route.id is defined %}
+        {% if entry.Route.hasPoints() %}
             <a class="google-map iframe" href="{{ path('view_route', { 'id': entry.Route.id }) }}">{{ entry.Route.area }}</a>
         {% endif %}
     </h4>
